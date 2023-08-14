@@ -1,9 +1,18 @@
 <template>
-  <Tutorial />
+  <div class="feedback">
+    <div class="feedback-wrap">
+      <div class="feedback-description-wrap">
+        <FeedbackFormDescription />
+      </div>
+      <div class="feedback-form-wrap">
+        <FeedbackForm />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-  name: 'IndexPage',
-};
 </script>
+
+<style scoped lang="scss">
+</style>
