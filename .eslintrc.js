@@ -24,6 +24,12 @@ module.exports = {
         sourceType: 'script',
       },
     },
+    {
+      files: ['pages/**/*.vue'],
+      rules: {
+        'vue/multi-word-component-names': 0,
+      },
+    },
   ],
   parserOptions: {
     ecmaVersion: 'latest',
