@@ -18,7 +18,7 @@
               class="feedback-form-input feedback-form-firstname feedback-form--short"
               type="text"
               placeholder="Имя *"
-            >
+            />
             <span class="error-text error-text-left">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
@@ -35,7 +35,7 @@
               class="feedback-form-input feedback-form-lastname feedback-form--short"
               type="text"
               placeholder="Фамилия *"
-            >
+            />
             <span class="error-text">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
@@ -52,7 +52,7 @@
               class="feedback-form-input feedback-form-position feedback-form--short"
               type="text"
               placeholder="Должность *"
-            >
+            />
             <span class="error-text error-text-left">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
@@ -69,7 +69,7 @@
               class="feedback-form-input feedback-form-company feedback-form--short"
               type="text"
               placeholder="Компания *"
-            >
+            />
             <span class="error-text">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
@@ -105,7 +105,7 @@
               class="feedback-form-input feedback-form-email feedback-form--short"
               type="email"
               placeholder="Email *"
-            >
+            />
             <span class="error-text">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
@@ -141,16 +141,13 @@
               class="feedback-form-input feedback-form-comment feedback-form--long"
               type="text"
               placeholder="Комментарий"
-            >
+            />
             <span class="error-text comment-error-text">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
 
         <div class="btn-text-wrap">
-          <button
-            class="btn-reset btn btn-feedback"
-            type="submit"
-          >
+          <button class="btn-reset btn btn-feedback" type="submit">
             Отправить
           </button>
           <div class="agreement">
@@ -169,7 +166,7 @@
 </template>
 
 <script>
-import countries from '@/assets/countries';
+import countries from '../../assets/countries';
 
 export default {
   data() {
@@ -278,7 +275,7 @@ export default {
   margin: 0;
   padding: 0;
   padding-left: 14px;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-weight: 500;
   font-size: 14px;
   color: black;
@@ -288,7 +285,7 @@ export default {
   border-radius: 4px;
 
   &::placeholder {
-    font-family: "Montserrat";
+    font-family: 'Montserrat';
     font-weight: 500;
     font-size: 14px;
     color: #959595;
@@ -452,7 +449,7 @@ export default {
   padding-left: 12px;
   border: none;
   font-weight: 500;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-size: 14px;
   height: 50px;
   color: #9a9a9a;
@@ -476,7 +473,7 @@ export default {
   padding-left: 14px;
   font-weight: 500;
   font-size: 14px;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   color: black;
   white-space: nowrap;
   max-width: 236px;
@@ -486,7 +483,7 @@ export default {
 .input-tel__input {
   border: none !important;
   font-weight: 500 !important;
-  font-family: "Montserrat" !important;
+  font-family: 'Montserrat' !important;
 }
 
 .country-selector__input {
@@ -495,14 +492,14 @@ export default {
 
 .country-selector__input {
   font-weight: 500 !important;
-  font-family: "Montserrat" !important;
+  font-family: 'Montserrat' !important;
   font-size: 14px !important;
 }
 
 .country-selector__label,
 .input-tel__label {
   font-weight: 500 !important;
-  font-family: "Montserrat" !important;
+  font-family: 'Montserrat' !important;
   font-size: 10px !important;
 }
 
