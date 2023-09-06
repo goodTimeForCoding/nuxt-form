@@ -124,7 +124,19 @@
               :default-country-code="contactFormData.countryCode"
               clearable
               @update="onUpdate"
-            />
+            >
+              <template #arrow>
+                <svg
+                  width="15"
+                  height="9"
+                  viewBox="0 0 15 9"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M1 1L7.5 7.5L14 1" stroke="#CDCDCD" />
+                </svg>
+              </template>
+            </VuePhoneNumberInput>
             <span class="error-text phone-error-text">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
@@ -167,8 +179,13 @@
 
 <script>
 import countries from '../../assets/countries';
+// import ArrowIcon from '../ArrowIcon/index.vue';
 
 export default {
+  // components: {
+  //   ArrowIcon,
+  // },
+
   data() {
     return {
       countries: this.getCountries(),
@@ -486,14 +503,20 @@ export default {
   font-family: 'Montserrat' !important;
 }
 
-.country-selector__input {
-  border: none !important;
+.input-country-selector {
+  border-right: 1px solid #cdcdcd !important;
+  z-index: 1 !important;
 }
 
 .country-selector__input {
+  border: none !important;
   font-weight: 500 !important;
   font-family: 'Montserrat' !important;
   font-size: 14px !important;
+}
+
+.country-selector__toggle {
+  height: 18px !important;
 }
 
 .country-selector__label,
