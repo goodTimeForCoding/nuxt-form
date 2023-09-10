@@ -24,9 +24,11 @@ module.exports = {
       },
     },
     {
-      files: ['pages/**/*.vue', 'components/**/*.vue'],
+      files: ['pages/**/*.vue', 'components/**/*.vue', 'store/**/*.js'],
       rules: {
         'vue/multi-word-component-names': 0,
+        'import/prefer-default-export': 'off',
+        allowObjectPatternsAsParameters: 'true',
       },
     },
   ],

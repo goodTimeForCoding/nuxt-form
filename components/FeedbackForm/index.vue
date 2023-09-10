@@ -141,12 +141,7 @@
           </div>
         </ValidationProvider>
 
-        <ValidationProvider
-          v-slot="{ errors }"
-          name="comment"
-          rules="required"
-          mode="eager"
-        >
+        <ValidationProvider v-slot="{ errors }" name="comment" mode="eager">
           <div class="form-group">
             <input
               v-model.trim="contactFormData.comment"
@@ -159,18 +154,12 @@
         </ValidationProvider>
 
         <div class="btn-text-wrap">
-          <button class="btn-reset btn btn-feedback" type="submit">
-            Отправить
-          </button>
-          <div class="agreement">
-            <p class="agreement-top">
-              Нажимая кнопку “Отправить“, вы соглашаетесь с нашей Политикой
-              конфиденциальности.
-            </p>
-            <p class="agreement-bottom">
-              Мы не делимся информацией с третьими лицами.
-            </p>
-          </div>
+          <button class="btn btn-feedback" type="submit">Отправить</button>
+          <p class="agreement">
+            Нажимая кнопку “Отправить“, вы соглашаетесь с нашей Политикой
+            конфиденциальности. <br />
+            Мы не делимся информацией с третьими лицами.
+          </p>
         </div>
       </form>
     </ValidationObserver>
@@ -178,17 +167,13 @@
 </template>
 
 <script>
-import countries from '../../assets/countries';
-// import ArrowIcon from '../ArrowIcon/index.vue';
+import countries from '../../mock/countries.json';
 
 export default {
-  // components: {
-  //   ArrowIcon,
-  // },
-
+  name: 'FeedbackForm',
   data() {
     return {
-      countries: this.getCountries(),
+      countries: [],
       contactFormData: {
         firstName: '',
         lastName: '',
@@ -198,7 +183,6 @@ export default {
         email: '',
         phone: '',
         comment: '',
-        recaptchaToken: '',
         countryCode: '',
         validPhone: '',
       },
@@ -214,6 +198,7 @@ export default {
 
   async mounted() {
     await this.$recaptcha.init();
+    this.countries = this.getCountries();
   },
 
   beforeUnmount() {
@@ -222,19 +207,22 @@ export default {
 
   methods: {
     newCountryCode() {
-      countries.forEach((item) => {
-        if (item.name === this.contactFormData.country) {
-          this.contactFormData.countryCode = item.code;
-        }
-      });
+      const country = countries.ru.find(this.isCountry);
+      if (country) {
+        this.contactFormData.countryCode = country.code;
+      } else {
+        this.contactFormData.countryCode = 'RU';
+      }
+    },
+    isCountry(country) {
+      return country.name === this.contactFormData.country;
     },
     onUpdate(payload) {
-      const results = payload;
-      this.contactFormData.countryCode = results.countryCode;
-      this.contactFormData.validPhone = results.e164;
+      this.contactFormData.countryCode = payload.countryCode;
+      this.contactFormData.validPhone = payload.e164;
     },
     getCountries() {
-      return countries.map((item) => item.name);
+      return countries.ru.map((item) => item.name);
     },
     adaptForm(token) {
       return {
@@ -252,7 +240,6 @@ export default {
         recaptchaToken: token,
         type: 'contact',
         page: '/ru/product/industrial-iot-platform/',
-        product: '',
       };
     },
 
@@ -350,6 +337,10 @@ export default {
     background: #4b8a13;
   }
 
+  &:focus:not(:active) {
+    background: #59a417;
+  }
+
   &:active {
     background: #2b5705;
   }
@@ -370,14 +361,9 @@ export default {
 }
 
 .btn-text-wrap {
-  margin-top: 20px;
+  margin-top: 19px;
   display: flex;
   flex-wrap: wrap;
-}
-
-.agreement-top,
-.agreement-bottom {
-  margin: 0;
 }
 
 .feedback-form-phone {
@@ -410,13 +396,16 @@ export default {
   }
 
   .btn-feedback {
-    margin-top: 29px;
     width: 100%;
+    margin: 0 auto;
   }
 
   .agreement {
     margin-top: 33px;
     max-width: 100%;
+    br {
+      display: none;
+    }
   }
 
   .form-group {
