@@ -74,24 +74,14 @@
           </div>
         </ValidationProvider>
 
-        <ValidationProvider
-          v-slot="{ errors }"
-          name="country"
-          rules="required"
-          mode="eager"
-        >
-          <div class="form-group">
-            <v-select
-              v-model.trim="contactFormData.country"
-              class="feedback-form-input feedback-form-country feedback-form--short"
-              :options="countries"
-              label="name"
-              placeholder="Страна"
-              @input="newCountryCode"
-            />
-            <span class="error-text error-text-left">{{ errors[0] }}</span>
-          </div>
-        </ValidationProvider>
+        <div class="form-group">
+          <DropdownComponent
+            class="feedback-form-input feedback-form-country feedback-form--short"
+            :options="countries"
+            :placeholder="`Страна *`"
+            @select="addCountry"
+          />
+        </div>
 
         <ValidationProvider
           v-slot="{ errors }"
@@ -168,9 +158,15 @@
 
 <script>
 import countries from '../../mock/countries.json';
+// import BaseInput from '../UI/BaseInput.vue';
+import DropdownComponent from '../UI/DropdownComponent.vue';
 
 export default {
   name: 'FeedbackForm',
+  components: {
+    // BaseInput,
+    DropdownComponent,
+  },
   data() {
     return {
       countries: [],
@@ -185,6 +181,7 @@ export default {
         comment: '',
         countryCode: '',
         validPhone: '',
+        isPhoneValid: '',
       },
 
       translations: {
@@ -206,7 +203,8 @@ export default {
   },
 
   methods: {
-    newCountryCode() {
+    addCountry(data) {
+      this.contactFormData.country = data.country;
       const country = countries.ru.find(this.isCountry);
       if (country) {
         this.contactFormData.countryCode = country.code;
@@ -220,6 +218,7 @@ export default {
     onUpdate(payload) {
       this.contactFormData.countryCode = payload.countryCode;
       this.contactFormData.validPhone = payload.e164;
+      this.contactFormData.isPhoneValid = payload.isValid;
     },
     getCountries() {
       return countries.ru.map((item) => item.name);
@@ -429,63 +428,6 @@ export default {
 </style>
 
 <style>
-.v-select {
-  display: inline-block;
-}
-
-.feedback-form-country .vs__dropdown-menu::-webkit-scrollbar {
-  width: 0px;
-  height: 7px;
-  background-color: transparent;
-}
-
-.feedback-form-country .vs__dropdown-menu::-webkit-scrollbar-thumb {
-  background-color: #9a9a9a;
-  border-radius: 5px;
-}
-
-.feedback-form-country .vs__dropdown-toggle {
-  padding: 0;
-  border: none;
-}
-
-.feedback-form-country .vs__search,
-.feedback-form-country .vs__search:focus {
-  margin: 0;
-  padding-left: 12px;
-  border: none;
-  font-weight: 500;
-  font-family: 'Montserrat';
-  font-size: 14px;
-  height: 50px;
-  color: #9a9a9a;
-}
-
-.feedback-form-country .vs__actions {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-.feedback-form-country .vs__selected-options {
-  padding: 0;
-  overflow: hidden;
-  flex-wrap: nowrap;
-}
-
-.feedback-form-country .vs__selected {
-  border: none;
-  padding: 0;
-  margin: 0;
-  padding-left: 14px;
-  font-weight: 500;
-  font-size: 14px;
-  font-family: 'Montserrat';
-  color: black;
-  white-space: nowrap;
-  max-width: 236px;
-  overflow: hidden;
-}
-
 .input-tel__input {
   border: none !important;
   font-weight: 500 !important;
