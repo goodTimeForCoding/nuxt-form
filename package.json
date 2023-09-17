@@ -15,14 +15,11 @@
     "@nuxtjs/axios": "5.13.6",
     "@nuxtjs/recaptcha": "1.1.2",
     "@nuxtjs/style-resources": "1.2.1",
-    "@nuxtjs/toast": "3.3.1",
     "normalize.css": "8.0.1",
     "nuxt": "2.17.1",
     "nuxt-webfontloader": "1.1.0",
-    "vee-validate": "3.3.7",
     "vue": "2.7.14",
-    "vue-phone-number-input": "1.12.13",
-    "vue-select": "3.20.2"
+    "vue-phone-number-input": "1.12.13"
   },
   "devDependencies": {
     "babel-eslint": "8",

@@ -1,22 +1,28 @@
 <template>
-  <section class="dropdown-wrapper">
-    <div @click="isVisible = !isVisible" class="selected-item">
+  <section class="dropdown-component">
+    <div class="selected-item">
       <input
+        :class="selectedItem ? 'dropdown-input' : ''"
+        @click="clickChange"
+        @input="inputChange"
         v-model="searchQuery"
         type="text"
         :placeholder="selectedItem ? selectedItem : placeholder"
+        tabindex="0"
       />
-      <svg
-        :class="isVisible ? 'dropdown' : ''"
-        class="dropdown-icon"
-        width="15"
-        height="9"
-        viewBox="0 0 15 9"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M1 1L7.5 7.5L14 1" stroke="#CDCDCD" />
-      </svg>
+      <div class="dropdown-icon-wrap" @click="changeView" tabindex="0">
+        <svg
+          :class="isVisible ? 'dropdown' : ''"
+          class="dropdown-icon"
+          width="15"
+          height="9"
+          viewBox="0 0 15 9"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M1 1L7.5 7.5L14 1" stroke="#CDCDCD" />
+        </svg>
+      </div>
     </div>
     <div :class="isVisible ? 'visible' : 'invisible'" class="dropdown-popover">
       <span class="not-data-text" v-if="filteredUser.length === 0">
@@ -39,7 +45,7 @@
 
 <script>
 export default {
-  name: 'dropdown-component',
+  name: 'DropdownComponent',
   props: {
     modelValue: {
       type: String,
@@ -54,7 +60,12 @@ export default {
         return `Выберите значение`;
       },
     },
+    checkValid: {
+      type: Function,
+      required: true,
+    },
   },
+
   data() {
     return {
       searchQuery: '',
@@ -76,8 +87,25 @@ export default {
   },
 
   methods: {
+    clickChange() {
+      this.isVisible = !this.isVisible;
+      this.checkValid();
+    },
+    inputChange() {
+      this.isVisible = true;
+      this.selectedItem = null;
+      this.$emit('select', { country: this.selectedItem });
+      this.checkValid();
+    },
+    changeView() {
+      this.isVisible = !this.isVisible;
+      if (!this.isVisible) {
+        this.checkValid();
+      }
+    },
     selectItem(item) {
       this.selectedItem = item;
+      this.checkValid();
       this.isVisible = false;
       this.$emit('select', { country: this.selectedItem });
       this.searchQuery = '';
@@ -87,7 +115,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.dropdown-wrapper {
+.dropdown-component {
   width: 300px;
   position: relative;
   margin: 0 auto;
@@ -101,10 +129,10 @@ export default {
     border-radius: 5px;
     padding: 0;
     padding-left: 14px;
-    padding-right: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
 
     input {
       position: relative;
@@ -112,6 +140,15 @@ export default {
       width: 90%;
       height: 30px;
       z-index: 10;
+    }
+
+    .dropdown-input::placeholder {
+      color: black;
+    }
+
+    .dropdown-icon-wrap {
+      cursor: pointer;
+      padding: 14px;
     }
 
     .dropdown-icon {
@@ -133,7 +170,6 @@ export default {
     background-color: #ffffff;
     max-width: 100%;
     visibility: hidden;
-    transition: all 0.3s linear;
     max-height: 0px;
     overflow: hidden;
     border-radius: 4px;
@@ -169,18 +205,8 @@ export default {
       display: inline-block;
       width: 100%;
       text-align: center;
+      padding: 13px;
     }
-  }
-
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 15px;
-    background-color: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #9a9a9a;
-    border-radius: 5px;
   }
 }
 </style>

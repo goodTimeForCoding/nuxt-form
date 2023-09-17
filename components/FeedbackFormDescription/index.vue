@@ -21,34 +21,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.description-title {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
+.feedback-form-description-component {
+  .description-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
 
-  &--mobile {
-    display: none;
+    &--mobile {
+      display: none;
+    }
+  }
+
+  .description-text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
   }
 }
 
-.description-text {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-}
-
 @include mobile {
-  .description-title {
-    margin-bottom: 30px;
+  .feedback-form-description-component {
+    .description-title {
+      margin-bottom: 31px;
 
-    &--mobile {
-      display: block;
-    }
+      &--mobile {
+        display: block;
+      }
 
-    &--no-mobile {
-      display: none;
+      &--no-mobile {
+        display: none;
+      }
     }
   }
 }
