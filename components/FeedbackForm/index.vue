@@ -1,110 +1,34 @@
 <template>
   <div>
-    <NotificationComponent :messages="messages" :timeout="10000" />
+    <NotificationComponent
+      :messages="messages"
+      :timeout="10000"
+      @updateMessages="updateMessages"
+    />
     <form class="feedback-form" novalidate>
-      <div class="form-group">
+      <div class="form-group" v-for="data of formDatum" :key="data.id">
         <BaseInput
-          v-model.trim="contactFormData.firstName"
-          type="text"
-          class="feedback-form-input feedback-form-firstname feedback-form--short"
-          placeholder="Имя *"
-          @blur="checkFirstName(contactFormData.firstName)"
+          v-if="data.type === 'text'"
+          v-model.trim="data.value"
+          :type="data.type"
+          :class="data.className"
+          :placeholder="data.placeholder"
         />
-        <span
-          :class="error.firstName === '✓' ? 'good-text' : ''"
-          class="error-text error-text-left"
-        >
-          {{ error.firstName }}
-        </span>
-      </div>
 
-      <div class="form-group">
-        <BaseInput
-          v-model.trim="contactFormData.lastName"
-          class="feedback-form-input feedback-form-lastname feedback-form--short"
-          type="text"
-          placeholder="Фамилия *"
-          @blur="checkLastName(contactFormData.lastName)"
-        />
-        <span
-          :class="error.lastName === '✓' ? 'good-text' : ''"
-          class="error-text"
-        >
-          {{ error.lastName }}
-        </span>
-      </div>
-
-      <div class="form-group">
-        <BaseInput
-          v-model.trim="contactFormData.position"
-          class="feedback-form-input feedback-form-position feedback-form--short"
-          type="text"
-          placeholder="Должность *"
-          @blur="checkPosition(contactFormData.position)"
-        />
-        <span
-          :class="error.position === '✓' ? 'good-text' : ''"
-          class="error-text error-text-left"
-        >
-          {{ error.position }}
-        </span>
-      </div>
-
-      <div class="form-group">
-        <BaseInput
-          v-model.trim="contactFormData.company"
-          class="feedback-form-input feedback-form-company feedback-form--short"
-          type="text"
-          placeholder="Компания *"
-          @blur="checkCompany(contactFormData.company)"
-        />
-        <span
-          :class="error.company === '✓' ? 'good-text' : ''"
-          class="error-text"
-        >
-          {{ error.company }}
-        </span>
-      </div>
-
-      <div class="form-group">
         <DropdownComponent
-          class="feedback-form-input feedback-form-country feedback-form--short"
-          :checkValid="checkCountry"
+          v-if="data.type === 'dropDown'"
+          :class="data.className"
           :options="countries"
           :placeholder="`Страна *`"
           @select="addCountryCode"
         />
-        <span
-          :class="error.country === '✓' ? 'good-text' : ''"
-          class="error-text error-text-left"
-        >
-          {{ error.country }}
-        </span>
-      </div>
 
-      <div class="form-group">
-        <BaseInput
-          v-model.trim="contactFormData.email"
-          class="feedback-form-input feedback-form-email feedback-form--short"
-          type="email"
-          placeholder="Email *"
-          @blur="checkEmail(contactFormData.email)"
-          @input="checkValidEmail(contactFormData.email)"
-        />
-        <span
-          :class="error.email === '✓' ? 'good-text' : ''"
-          class="error-text"
-        >
-          {{ error.email }}
-        </span>
-      </div>
-
-      <div class="form-group" @focusout="handleFocusOut" tabindex="0">
         <VuePhoneNumberInput
-          v-model.trim="contactFormData.phone"
-          class="feedback-form-input feedback-form-phone feedback-form--long"
+          v-if="data.type === 'phoneNumberInput'"
+          v-model.trim="data.value"
+          :class="data.className"
           :translations="translations"
-          :default-country-code="contactFormData.countryCode"
+          :default-country-code="countryCode"
           clearable
           @update="onUpdate"
         >
@@ -120,22 +44,9 @@
             </svg>
           </template>
         </VuePhoneNumberInput>
-        <span
-          :class="error.phone === '✓' ? 'good-text' : ''"
-          class="error-text phone-error-text"
-        >
-          {{ error.phone }}
+        <span v-if="showErrorText(data.formName)" :class="data.errorTextClass">
+          {{ showErrorText(data.formName) }}
         </span>
-      </div>
-
-      <div class="form-group">
-        <BaseInput
-          v-model.trim="contactFormData.comment"
-          class="feedback-form-input feedback-form-comment feedback-form--long"
-          type="text"
-          placeholder="Комментарий"
-        />
-        <span class="error-text comment-error-text">{{ error.comment }}</span>
       </div>
 
       <div class="btn-text-wrap">
@@ -165,33 +76,95 @@ export default {
     NotificationComponent,
     BaseInput,
   },
+
   data() {
     return {
+      formDatum: [
+        {
+          id: 1,
+          value: '',
+          placeholder: 'Имя *',
+          type: 'text',
+          formName: 'firstName',
+          className:
+            'feedback-form-input feedback-form-firstname feedback-form--short',
+          errorTextClass: 'error-text error-text-left',
+        },
+        {
+          id: 2,
+          value: '',
+          placeholder: 'Фамилия *',
+          type: 'text',
+          formName: 'lastName',
+          className:
+            'feedback-form-input feedback-form-lastname feedback-form--short',
+          errorTextClass: 'error-text',
+        },
+        {
+          id: 3,
+          value: '',
+          placeholder: 'Должность *',
+          type: 'text',
+          formName: 'position',
+          className:
+            'feedback-form-input feedback-form-position feedback-form--short',
+          errorTextClass: 'error-text error-text-left',
+        },
+        {
+          id: 4,
+          value: '',
+          placeholder: 'Компания *',
+          type: 'text',
+          formName: 'company',
+          className:
+            'feedback-form-input feedback-form-company feedback-form--short',
+          errorTextClass: 'error-text',
+        },
+        {
+          id: 5,
+          value: 'Россия',
+          type: 'dropDown',
+          formName: 'country',
+          className:
+            'feedback-form-input feedback-form-country feedback-form--short',
+          errorTextClass: 'error-text error-text-left',
+        },
+        {
+          id: 6,
+          value: '',
+          placeholder: 'Email *',
+          type: 'text',
+          formName: 'email',
+          className:
+            'feedback-form-input feedback-form-email feedback-form--short',
+          errorTextClass: 'error-text',
+        },
+        {
+          id: 7,
+          value: '',
+          type: 'phoneNumberInput',
+          formName: 'phone',
+          className:
+            'feedback-form-input feedback-form-phone feedback-form--long',
+          errorTextClass: 'error-text phone-error-text',
+        },
+        {
+          id: 8,
+          value: '',
+          placeholder: 'Комментарий',
+          type: 'text',
+          formName: 'comment',
+          className:
+            'feedback-form-input feedback-form-comment feedback-form--long',
+          errorTextClass: 'error-text comment-error-text',
+        },
+      ],
+      errors: [],
       countries: [],
-      isFormValid: false,
       messages: [],
-      error: {
-        firstName: '',
-        lastName: '',
-        position: '',
-        company: '',
-        country: '',
-        email: '',
-        phone: '',
-      },
-      contactFormData: {
-        firstName: '',
-        lastName: '',
-        position: '',
-        company: '',
-        country: '',
-        email: '',
-        phone: '',
-        comment: '',
-        countryCode: '',
-        validPhone: '',
-        isPhoneValid: '',
-      },
+      countryCode: 'RU',
+      validPhone: '',
+      isPhoneValid: '',
       translations: {
         countrySelectorLabel: 'Код страны',
         countrySelectorError: 'Выберите код страны',
@@ -202,7 +175,7 @@ export default {
   },
 
   async mounted() {
-    // await this.$recaptcha.init();
+    await this.$recaptcha.init();
     this.countries = this.getCountries();
   },
 
@@ -212,117 +185,44 @@ export default {
 
   methods: {
     addCountryCode(data) {
-      this.contactFormData.country = data.country;
+      this.formDatum[4].value = data.country;
       const country = countries.ru.find(this.isCountry);
       if (country) {
-        this.contactFormData.countryCode = country.code;
-      } else {
-        this.contactFormData.countryCode = 'RU';
+        this.countryCode = country.code;
       }
-      this.checkCountry();
     },
 
     isCountry(country) {
-      return country.name === this.contactFormData.country;
+      return country.name === this.formDatum[4].value;
     },
 
     onUpdate(payload) {
-      this.contactFormData.countryCode = payload.countryCode;
-      this.contactFormData.validPhone = payload.e164;
-      this.contactFormData.isPhoneValid = payload.isValid;
+      this.countryCode = payload.countryCode;
+      this.validPhone = payload.e164;
+      this.isPhoneValid = payload.isValid;
     },
 
     getCountries() {
-      return countries.ru.map((item) => item.name);
-    },
-
-    handleFocusOut() {
-      this.checkPhone();
+      return countries.ru.map(item => item.name);
     },
 
     adaptForm(token) {
       return {
         locale: 'ru',
-        firstName: this.contactFormData.firstName,
-        lastName: this.contactFormData.lastName,
-        position: this.contactFormData.position,
-        company: this.contactFormData.company,
+        firstName: this.formDatum[0].value,
+        lastName: this.formDatum[1].value,
+        position: this.formDatum[2].value,
+        company: this.formDatum[3].value,
         industry: 'Процессные индустрии',
-        country: this.contactFormData.country,
-        email: this.contactFormData.email,
-        phone: this.contactFormData.validPhone,
-        comment: this.contactFormData.comment,
-        countryCode: this.contactFormData.countryCode,
+        country: this.formDatum[4].value,
+        email: this.formDatum[5].value,
+        phone: this.formDatum[6].value,
+        comment: this.formDatum[7].value,
+        countryCode: this.countryCode,
         recaptchaToken: token,
         type: 'contact',
         page: '/ru/product/industrial-iot-platform/',
       };
-    },
-
-    checkFirstName(data) {
-      if (!data) {
-        this.error.firstName = 'Введите имя';
-        return;
-      }
-      this.error.firstName = '✓';
-      this.checkValid(Object.values(this.error));
-    },
-
-    checkLastName(data) {
-      if (!data) {
-        this.error.lastName = 'Введите фамилию';
-        return;
-      }
-      this.error.lastName = '✓';
-      this.checkValid(Object.values(this.error));
-    },
-
-    checkPosition(data) {
-      if (!data) {
-        this.error.position = 'Введите должность';
-        return;
-      }
-      this.error.position = '✓';
-      this.checkValid(Object.values(this.error));
-    },
-
-    checkCompany(data) {
-      if (!data) {
-        this.error.company = 'Введите компанию';
-        return;
-      }
-      this.error.company = '✓';
-      this.checkValid(Object.values(this.error));
-    },
-
-    checkCountry() {
-      if (!this.contactFormData.country) {
-        this.error.country = 'Выберите страну';
-        return;
-      }
-      this.error.country = '✓';
-      this.checkValid(Object.values(this.error));
-    },
-
-    checkEmail(data) {
-      if (!data) {
-        this.error.email = 'Введите email';
-        return;
-      } else if (!this.validEmail(this.contactFormData.email)) {
-        this.error.email = 'Введите корректный email';
-        return;
-      }
-      this.error.email = '✓';
-      this.checkValid(Object.values(this.error));
-    },
-
-    checkValidEmail() {
-      if (!this.validEmail(this.contactFormData.email)) {
-        this.error.email = 'Введите корректный email';
-        return;
-      }
-      this.error.email = '✓';
-      this.checkValid(Object.values(this.error));
     },
 
     validEmail(email) {
@@ -331,28 +231,51 @@ export default {
       return re.test(email);
     },
 
-    checkPhone() {
-      if (!this.contactFormData.phone) {
-        this.error.phone = 'Введите телефон';
-        return;
-      } else if (!this.contactFormData.isPhoneValid) {
-        this.error.phone = 'Введите корректный телефон';
-        return;
-      }
-      this.error.phone = '✓';
-      this.checkValid(Object.values(this.error));
+    checkValid() {
+      this.errors = [];
+      this.formDatum.forEach(item => {
+        if (item.formName === 'comment') {
+          return;
+        }
+        if (item.value === '' || item.value === null) {
+          this.errors.push({
+            name: item.formName,
+            errorText: 'Поле обязательно для заполнения',
+          });
+        }
+        if (!this.validEmail(item.value) && item.formName === 'email') {
+          this.errors.push({
+            name: item.formName,
+            errorText: 'Введите корректный email',
+          });
+        }
+        if (this.isPhoneValid === false && item.formName === 'phone') {
+          this.errors.push({
+            name: item.formName,
+            errorText: 'Введите корректный телефон',
+          });
+        }
+      });
     },
 
-    checkValid(arr) {
-      const res = arr.some((arrItem) => arrItem !== '✓');
-      res ? (this.isFormValid = false) : (this.isFormValid = true);
+    showErrorText(name) {
+      const errElement = this.errors.find(item => {
+        return item.name === name;
+      });
+      if (errElement) {
+        return errElement.errorText;
+      }
+      return errElement;
+    },
+
+    updateMessages(newMessages) {
+      this.messages = newMessages;
     },
 
     async onSubmit() {
       try {
-        this.checkValid(Object.values(this.error));
-        console.log(Object.values(this.error));
-        if (this.isFormValid) {
+        this.checkValid();
+        if (this.errors.length === 0) {
           const token = await this.$recaptcha.execute('login');
           const data = this.adaptForm(token);
           await this.$store.dispatch('feedbackModule/postFeedbackData', data);
@@ -381,6 +304,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('vue-phone-number-input/dist/vue-phone-number-input.css');
+
 .feedback-form {
   max-width: 671px;
 
@@ -399,41 +324,36 @@ export default {
 
   .error-text {
     position: absolute;
+    right: 5px;
+    bottom: 5px;
+    z-index: 5;
     color: red;
     font-size: 10px;
-    bottom: 5px;
-    right: 5px;
-    z-index: 5;
   }
 
   .error-text-left {
-    bottom: 15px;
     right: 16px;
-  }
-
-  .good-text {
-    color: green;
-    font-size: 15px;
+    bottom: 15px;
   }
 
   .feedback-form-input {
+    height: 49px;
     margin: 0;
     padding: 0;
     padding-left: 14px;
-    font-family: 'Montserrat';
+    color: $black;
     font-weight: 500;
     font-size: 14px;
-    color: black;
-    height: 49px;
-    background: white;
+    font-family: 'Montserrat';
+    background: $white;
     border: none;
     border-radius: 4px;
 
     &::placeholder {
-      font-family: 'Montserrat';
+      color: $lightgrey;
       font-weight: 500;
       font-size: 14px;
-      color: #959595;
+      font-family: 'Montserrat';
     }
   }
 
@@ -449,29 +369,29 @@ export default {
   }
 
   .btn-feedback {
-    margin-right: 14px;
-    font-size: 14px;
-    font-weight: 700;
     position: relative;
     display: inline-block;
-    background: #59a417;
+    margin-right: 14px;
     padding: 18px 28px;
+    color: $white;
+    font-weight: 700;
+    font-size: 14px;
     text-decoration: none;
-    color: white;
+    background: $christi;
     border-radius: 4px;
     transition: background-color 0.3s ease;
 
     &:hover,
     &:focus {
-      background: #4b8a13;
+      background: $vida;
     }
 
     &:focus:not(:active) {
-      background: #59a417;
+      background: $christi;
     }
 
     &:active {
-      background: #2b5705;
+      background: $sanfelix;
     }
   }
 
@@ -480,23 +400,24 @@ export default {
   }
 
   .agreement {
+    display: inline-block;
+    max-width: 490px;
     margin: 0;
+    color: $grey;
     font-weight: 500;
     font-size: 12px;
     line-height: 18px;
-    color: #979797;
-    display: inline-block;
-    max-width: 490px;
   }
 
   .btn-text-wrap {
-    margin-top: 19px;
     display: flex;
     flex-wrap: wrap;
+    margin-top: 19px;
   }
 
   .feedback-form-phone {
     padding: 0;
+
     @include flex-v-center;
   }
 }
@@ -530,8 +451,9 @@ export default {
     }
 
     .agreement {
-      margin-top: 33px;
       max-width: 100%;
+      margin-top: 33px;
+
       br {
         display: none;
       }
@@ -542,49 +464,18 @@ export default {
     }
 
     .error-text {
-      bottom: 12px;
       right: 5px;
+      bottom: 12px;
     }
 
     .error-text-left {
-      bottom: 12px;
       right: 5px;
+      bottom: 12px;
     }
 
     .phone-error-text {
       bottom: 2px;
     }
   }
-}
-</style>
-
-<style>
-.input-tel__input {
-  border: none !important;
-  font-weight: 500 !important;
-  font-family: 'Montserrat' !important;
-}
-
-.input-country-selector {
-  border-right: 1px solid #cdcdcd !important;
-  z-index: 1 !important;
-}
-
-.country-selector__input {
-  border: none !important;
-  font-weight: 500 !important;
-  font-family: 'Montserrat' !important;
-  font-size: 14px !important;
-}
-
-.country-selector__toggle {
-  height: 18px !important;
-}
-
-.country-selector__label,
-.input-tel__label {
-  font-weight: 500 !important;
-  font-family: 'Montserrat' !important;
-  font-size: 10px !important;
 }
 </style>

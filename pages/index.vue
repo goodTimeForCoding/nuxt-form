@@ -19,10 +19,10 @@ export default {
 
 <style scoped lang="scss">
 .feedback-wrap {
-  padding-top: 50px;
-  @include flex-h-center;
   flex-wrap: wrap;
   gap: 30px;
+  padding-top: 50px;
+  @include flex-h-center;
 
   .feedback-description-wrap {
     max-width: 370px;
@@ -33,13 +33,14 @@ export default {
     padding-bottom: 30px;
   }
 }
+
 @include tablet {
   .feedback-wrap {
-    @include flex;
-    max-width: 671px;
     flex-direction: column;
-    margin: 0 auto;
     gap: 43px;
+    max-width: 671px;
+    margin: 0 auto;
+    @include flex;
   }
 }
 

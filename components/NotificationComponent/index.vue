@@ -18,6 +18,7 @@
 <script>
 export default {
   name: 'NotificationComponent',
+
   props: {
     messages: {
       type: Array,
@@ -30,19 +31,19 @@ export default {
       default: 3000,
     },
   },
-  data() {
-    return {};
-  },
+
   methods: {
     hideNotification() {
-      let vm = this;
-      if (this.messages.length) {
-        setTimeout(function () {
-          vm.messages.splice(vm.messages.length - 1, 1);
-        }, vm.timeout);
-      }
+      setTimeout(() => {
+        const messagesArray = this.messages.map(a => ({ ...a }));
+        if (this.messages.length) {
+          messagesArray.splice(messagesArray.length - 1, 1);
+          this.$emit('updateMessages', messagesArray);
+        }
+      }, this.timeout);
     },
   },
+
   watch: {
     messages() {
       this.hideNotification();
@@ -57,33 +58,39 @@ export default {
 <style lang="scss">
 .notification {
   position: fixed;
-  top:30px;
+  top: 30px;
   right: 16px;
   z-index: 10;
+
   &__messages_list {
     display: flex;
     flex-direction: column-reverse;
   }
+
   &__content {
-    padding: 16px;
-    border-radius: 4px;
-    color: #ffffff;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     height: 50px;
     margin-bottom: 16px;
-    background: green;
+    padding: 16px;
+    color: $white;
+    background: $laurel;
+    border-radius: 4px;
+
     &.error {
-      background: red;
+      background: $red;
     }
+
     &.warning {
-      background: orange;
+      background: $orange;
     }
+
     &.check {
-      background: green;
+      background: $laurel;
     }
   }
+
   .content {
     &__text {
       display: flex;
@@ -98,9 +105,11 @@ export default {
     transform: translateX(120px);
     opacity: 0;
   }
+
   &-enter-active {
     transition: all 0.6s ease;
   }
+
   &-enter-to {
     opacity: 1;
   }
@@ -109,9 +118,11 @@ export default {
     height: 50px;
     opacity: 1;
   }
+
   &-leave-active {
     transition: transform 0.6s ease, opacity 0.6s, height 0.6s 0.2s;
   }
+
   &-leave-to {
     height: 0;
     transform: translateX(120px);

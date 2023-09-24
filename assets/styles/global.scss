@@ -31,3 +31,33 @@ button {
   background: transparent;
   cursor: pointer;
 }
+
+.input-tel__input {
+  border: none !important;
+  font-weight: 500 !important;
+  font-family: 'Montserrat' !important;
+}
+
+.input-country-selector {
+  border-right: 1px solid #cdcdcd !important;
+  z-index: 1 !important;
+}
+
+.country-selector__input {
+  border: none !important;
+  font-weight: 500 !important;
+  font-family: 'Montserrat' !important;
+  font-size: 14px !important;
+}
+
+.country-selector__toggle {
+  height: 18px !important;
+  top: calc(50% - 6px) !important;
+}
+
+.country-selector__label,
+.input-tel__label {
+  font-weight: 500 !important;
+  font-family: 'Montserrat' !important;
+  font-size: 10px !important;
+}

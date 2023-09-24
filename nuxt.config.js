@@ -39,6 +39,7 @@ export default {
       './assets/styles/mini.scss',
       './assets/styles/settings.scss',
       './assets/styles/breakpoint.scss',
+      './assets/styles/variables.scss',
     ],
   },
 

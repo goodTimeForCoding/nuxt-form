@@ -1,11 +1,6 @@
 <template>
   <div class="feedback-form-description-component">
-    <h1 class="description-title description-title--no-mobile">
-      Будем на связи
-    </h1>
-    <h1 class="description-title description-title--mobile">
-      Свяжитесь с нами
-    </h1>
+    <h1 class="description-title">{{ addTitle }}</h1>
     <p class="description-text">
       Оставьте здесь свои контакты, и мы свяжемся с вами, чтобы рассказать, как
       цифровые решения могут повысить безопасность и эффективность вашего
@@ -17,6 +12,37 @@
 <script>
 export default {
   name: 'FeedbackFormDescription',
+
+  data() {
+    return {
+      screenWidth: 0,
+    };
+  },
+
+  mounted() {
+    this.updateScreenWidth();
+    this.onScreenResize();
+  },
+
+  methods: {
+    onScreenResize() {
+      window.addEventListener('resize', () => {
+        this.updateScreenWidth();
+      });
+    },
+    updateScreenWidth() {
+      this.screenWidth = window.innerWidth;
+    },
+  },
+
+  computed: {
+    addTitle() {
+      if (this.screenWidth < 768) {
+        return 'Свяжитесь с нами';
+      }
+      return 'Будем на связи';
+    },
+  },
 };
 </script>
 
@@ -24,19 +50,15 @@ export default {
 .feedback-form-description-component {
   .description-title {
     margin: 0;
-    font-size: 22px;
-    font-weight: 700;
     margin-bottom: 24px;
-
-    &--mobile {
-      display: none;
-    }
+    font-weight: 700;
+    font-size: 22px;
   }
 
   .description-text {
     margin: 0;
-    font-size: 14px;
     font-weight: 500;
+    font-size: 14px;
     line-height: 20px;
   }
 }
@@ -45,14 +67,6 @@ export default {
   .feedback-form-description-component {
     .description-title {
       margin-bottom: 31px;
-
-      &--mobile {
-        display: block;
-      }
-
-      &--no-mobile {
-        display: none;
-      }
     }
   }
 }
