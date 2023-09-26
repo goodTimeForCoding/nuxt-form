@@ -234,9 +234,7 @@ export default {
     checkValid() {
       this.errors = [];
       this.formDatum.forEach(item => {
-        if (item.formName === 'comment') {
-          return;
-        }
+        if (item.formName === 'comment') return;
         if (item.value === '' || item.value === null) {
           this.errors.push({
             name: item.formName,
@@ -304,8 +302,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('vue-phone-number-input/dist/vue-phone-number-input.css');
-
 .feedback-form {
   max-width: 671px;
 

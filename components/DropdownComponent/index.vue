@@ -10,32 +10,23 @@
         :placeholder="addPlaceholder"
       />
       <div class="dropdown-icon-wrap" @click="changeView">
-        <svg
-          :class="addIconDropDownClass"
-          class="dropdown-icon"
-          width="15"
-          height="9"
-          viewBox="0 0 15 9"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M1 1L7.5 7.5L14 1" stroke="#CDCDCD" />
-        </svg>
+        <img
+          :class="['dropdown-icon', addIconDropDownClass]"
+          src="../../public/arrow.svg"
+        />
       </div>
     </div>
-    <div :class="addPopoverClass" class="dropdown-popover">
+    <div :class="['dropdown-popover', addPopoverClass]">
       <span class="not-data-text" v-if="isFilteredData">Нет данных </span>
-      <div class="options">
-        <ul>
-          <li
-            @click="selectItem(item)"
-            v-for="(item, index) in filteredUser"
-            :key="`item-${index}`"
-          >
-            {{ item }}
-          </li>
-        </ul>
-      </div>
+      <ul class="options">
+        <li
+          @click="selectItem(item)"
+          v-for="(item, index) in filteredUser"
+          :key="`item-${index}`"
+        >
+          {{ item }}
+        </li>
+      </ul>
     </div>
   </section>
 </template>
@@ -44,9 +35,6 @@
 export default {
   name: 'DropdownComponent',
   props: {
-    modelValue: {
-      type: String,
-    },
     options: {
       type: Array,
       default: () => [],
@@ -69,20 +57,14 @@ export default {
 
   computed: {
     filteredUser() {
-      const query = this.searchQuery.toLowerCase();
-      if (this.searchQuery === '') {
-        return this.options;
-      }
+      if (this.searchQuery === '') return this.options;
       return this.options.filter(item => {
-        return item.toLowerCase().includes(query);
+        return item.toLowerCase().includes(this.searchQuery.toLowerCase());
       });
     },
 
     addDropDownClass() {
-      if (this.selectedItem) {
-        return 'dropdown-input';
-      }
-      return;
+      if (this.selectedItem) return 'dropdown-input';
     },
 
     addPlaceholder() {
@@ -93,23 +75,16 @@ export default {
     },
 
     addIconDropDownClass() {
-      if (this.isVisible) {
-        return 'dropdown';
-      }
-      return;
+      if (this.isVisible) return 'dropdown';
     },
 
     addPopoverClass() {
-      if (this.isVisible) {
-        return 'visible';
-      }
+      if (this.isVisible) return 'visible';
       return 'invisible';
     },
 
     isFilteredData() {
-      if (this.filteredUser.length === 0) {
-        return true;
-      }
+      if (this.filteredUser.length === 0) return true;
       return false;
     },
   },
@@ -209,9 +184,6 @@ export default {
 
     .options {
       width: 100%;
-    }
-
-    .options ul {
       max-height: 180px;
       margin: 0;
       padding-left: 8px;
@@ -220,7 +192,6 @@ export default {
       text-align: left;
       list-style: none;
     }
-
     .options li {
       width: 100%;
       padding: 10px;

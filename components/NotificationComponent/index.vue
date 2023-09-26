@@ -2,10 +2,9 @@
   <div class="notification">
     <transition-group name="v-transition-animate" class="messages_list">
       <div
-        class="notification__content"
+        :class="['notification__content', message.type]"
         v-for="message in messages"
         :key="message.id"
-        :class="message.type"
       >
         <div class="content__text">
           <span>{{ message.name }}</span>
@@ -49,6 +48,7 @@ export default {
       this.hideNotification();
     },
   },
+
   mounted() {
     this.hideNotification();
   },

@@ -37,9 +37,7 @@ export default {
 
   computed: {
     addTitle() {
-      if (this.screenWidth < 768) {
-        return 'Свяжитесь с нами';
-      }
+      if (this.screenWidth < 768) return 'Свяжитесь с нами';
       return 'Будем на связи';
     },
   },

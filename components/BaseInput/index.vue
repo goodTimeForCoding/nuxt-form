@@ -1,5 +1,5 @@
 <template>
-  <input :value="value" v-bind="$attrs" v-on="inputListeners" />
+  <input :value="value" v-bind="$attrs" @input="inputHundler" />
 </template>
 
 <script>
@@ -11,14 +11,9 @@ export default {
       default: '',
     },
   },
-  computed: {
-    inputListeners: function () {
-      var vm = this;
-      return Object.assign({}, this.$listeners, {
-        input: function (event) {
-          vm.$emit('input', event.target.value);
-        },
-      });
+  methods: {
+    inputHundler(event) {
+      this.$emit('input', event.target.value);
     },
   },
 };
