@@ -1,3 +1,5 @@
+import StylelintPlugin from 'stylelint-webpack-plugin';
+
 export default {
   head: {
     title: 'nuxt-form',
@@ -15,7 +17,18 @@ export default {
 
   css: ['normalize.css', './assets/styles/global.scss'],
 
-  plugins: ['./plugins/vuePhoneNumberInput.js'],
+  plugins: ['./plugins/vuePhoneNumberInput.js', './plugins/directives.js'],
+
+  build: {
+    extend(config) {
+      config.plugins.push(
+        new StylelintPlugin({
+          files: ['{components,layouts,pages}/**/*.vue', '**/*.css'],
+          fix: true,
+        })
+      );
+    },
+  },
 
   components: true,
   buildModules: [],

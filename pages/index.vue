@@ -22,6 +22,7 @@ export default {
   flex-wrap: wrap;
   gap: 30px;
   padding-top: 50px;
+
   @include flex-h-center;
 
   .feedback-description-wrap {
@@ -35,16 +36,19 @@ export default {
 }
 
 @include tablet {
+
   .feedback-wrap {
     flex-direction: column;
     gap: 43px;
     max-width: 671px;
     margin: 0 auto;
+
     @include flex;
   }
 }
 
 @include mobile {
+
   .feedback-wrap {
     display: block;
 

@@ -33,15 +33,7 @@
           @update="onUpdate"
         >
           <template #arrow>
-            <svg
-              width="15"
-              height="9"
-              viewBox="0 0 15 9"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M1 1L7.5 7.5L14 1" stroke="#CDCDCD" />
-            </svg>
+            <img src="../../public/arrow.svg" />
           </template>
         </VuePhoneNumberInput>
         <span v-if="showErrorText(data.formName)" :class="data.errorTextClass">
@@ -226,7 +218,7 @@ export default {
     },
 
     validEmail(email) {
-      var re =
+      const re =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
@@ -319,12 +311,12 @@ export default {
   }
 
   .error-text {
+    z-index: 5;
     position: absolute;
     right: 5px;
     bottom: 5px;
-    z-index: 5;
-    color: red;
     font-size: 10px;
+    color: red;
   }
 
   .error-text-left {
@@ -337,19 +329,19 @@ export default {
     margin: 0;
     padding: 0;
     padding-left: 14px;
-    color: $black;
-    font-weight: 500;
-    font-size: 14px;
-    font-family: 'Montserrat';
-    background: $white;
-    border: none;
     border-radius: 4px;
+    border: unset;
+    background: $white;
+    font-size: 14px;
+    font-weight: 500;
+    color: $black;
+    font-family: "Montserrat";
 
     &::placeholder {
-      color: $lightgrey;
-      font-weight: 500;
       font-size: 14px;
-      font-family: 'Montserrat';
+      font-weight: 500;
+      color: $lightgrey;
+      font-family: "Montserrat";
     }
   }
 
@@ -369,13 +361,13 @@ export default {
     display: inline-block;
     margin-right: 14px;
     padding: 18px 28px;
-    color: $white;
-    font-weight: 700;
-    font-size: 14px;
-    text-decoration: none;
-    background: $christi;
     border-radius: 4px;
-    transition: background-color 0.3s ease;
+    background: $christi;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color .3s ease;
+    color: $white;
 
     &:hover,
     &:focus {
@@ -399,10 +391,10 @@ export default {
     display: inline-block;
     max-width: 490px;
     margin: 0;
-    color: $grey;
-    font-weight: 500;
     font-size: 12px;
     line-height: 18px;
+    font-weight: 500;
+    color: $grey;
   }
 
   .btn-text-wrap {
@@ -419,6 +411,7 @@ export default {
 }
 
 @include mobile {
+
   .feedback-form {
     width: 100%;
 

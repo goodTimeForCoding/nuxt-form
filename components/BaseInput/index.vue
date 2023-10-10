@@ -1,5 +1,9 @@
 <template>
-  <input :value="value" v-bind="$attrs" @input="inputHundler" />
+  <input
+    :value="value"
+    v-bind="$attrs"
+    @input="inputHundler"
+  />
 </template>
 
 <script>

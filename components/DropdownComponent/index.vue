@@ -1,9 +1,9 @@
 <template>
-  <section class="dropdown-component">
+  <section class="dropdown-component" v-click-outside="noVisible">
     <div class="selected-item">
       <input
         :class="addDropDownClass"
-        @click="clickChange"
+        @click="changeView"
         @input="inputChange"
         v-model="searchQuery"
         type="text"
@@ -68,9 +68,7 @@ export default {
     },
 
     addPlaceholder() {
-      if (this.selectedItem) {
-        return this.selectedItem;
-      }
+      if (this.selectedItem) return this.selectedItem;
       return this.placeholder;
     },
 
@@ -90,8 +88,8 @@ export default {
   },
 
   methods: {
-    clickChange() {
-      this.isVisible = !this.isVisible;
+    noVisible() {
+      this.isVisible = false;
     },
 
     inputChange() {
@@ -116,28 +114,28 @@ export default {
 
 <style scoped lang="scss">
 .dropdown-component {
-  position: relative;
   z-index: 4;
+  position: relative;
   width: 300px;
   margin: 0 auto;
-  font-weight: 500;
   font-size: 14px;
+  font-weight: 500;
 
   .selected-item {
     height: 49px;
     padding: 0;
-    background: $white;
     border-radius: 5px;
+    background: $white;
     cursor: pointer;
 
     input {
-      position: relative;
       z-index: 10;
+      position: relative;
       width: 100%;
       height: 100%;
       padding-left: 14px;
-      border: none;
       border-radius: 5px;
+      border: unset;
     }
 
     .dropdown-input::placeholder {
@@ -145,36 +143,36 @@ export default {
     }
 
     .dropdown-icon-wrap {
+      z-index: 10;
       position: absolute;
       top: 2px;
       right: 0;
-      z-index: 10;
       padding: 14px;
       cursor: pointer;
     }
 
     .dropdown-icon {
       transform: rotate(0deg);
-      transition: all 0.3s ease;
+      transition: all .3s ease;
     }
 
     .dropdown-icon.dropdown {
       transform: rotate(180deg);
-      transition: all 0.3s ease;
+      transition: all .3s ease;
     }
   }
 
   .dropdown-popover {
+    z-index: 2;
     position: absolute;
     top: 40px;
     right: 0;
     left: 0;
-    z-index: 2;
     max-width: 100%;
     max-height: 0px;
-    overflow: hidden;
-    background-color: $white;
     border-radius: 4px;
+    background-color: $white;
+    overflow: hidden;
     visibility: hidden;
 
     &.visible {
@@ -183,8 +181,8 @@ export default {
     }
 
     .options {
-      width: 100%;
       max-height: 180px;
+      width: 100%;
       margin: 0;
       padding-left: 8px;
       overflow-x: hidden;
@@ -192,6 +190,7 @@ export default {
       text-align: left;
       list-style: none;
     }
+
     .options li {
       width: 100%;
       padding: 10px;

@@ -57,10 +57,10 @@ export default {
 
 <style lang="scss">
 .notification {
+  z-index: 10;
   position: fixed;
   top: 30px;
   right: 16px;
-  z-index: 10;
 
   &__messages_list {
     display: flex;
@@ -69,14 +69,14 @@ export default {
 
   &__content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     height: 50px;
     margin-bottom: 16px;
     padding: 16px;
-    color: $white;
-    background: $laurel;
     border-radius: 4px;
+    background: $laurel;
+    color: $white;
 
     &.error {
       background: $red;
@@ -92,22 +92,24 @@ export default {
   }
 
   .content {
+
     &__text {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
   }
 }
 
 .v-transition-animate {
+
   &-enter {
     transform: translateX(120px);
     opacity: 0;
   }
 
   &-enter-active {
-    transition: all 0.6s ease;
+    transition: all .6s ease;
   }
 
   &-enter-to {
@@ -120,17 +122,17 @@ export default {
   }
 
   &-leave-active {
-    transition: transform 0.6s ease, opacity 0.6s, height 0.6s 0.2s;
+    transition: transform .6s ease, opacity .6s, height .6s .2s;
   }
 
   &-leave-to {
-    height: 0;
     transform: translateX(120px);
+    height: 0;
     opacity: 0;
   }
 
   &-move {
-    transition: transform 0.6s ease;
+    transition: transform .6s ease;
   }
 }
 </style>
