@@ -17,7 +17,7 @@
       </div>
     </div>
     <div :class="['dropdown-popover', addPopoverClass]">
-      <span class="not-data-text" v-if="isFilteredData">Нет данных </span>
+      <span class="not-data-text" v-if="isFilteredData">Нет данных</span>
       <ul class="options">
         <li
           @click="selectItem(item)"
