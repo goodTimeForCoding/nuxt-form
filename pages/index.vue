@@ -10,40 +10,51 @@
     </div>
   </div>
 </template>
-<script></script>
+
+<script>
+export default {
+  name: 'ContactBlock',
+};
+</script>
+
 <style scoped lang="scss">
-.feedback-description-wrap {
-  max-width: 370px;
-}
-
-.feedback-form-wrap {
-  max-width: 671px;
-  padding-bottom: 30px;
-}
-
 .feedback-wrap {
-  padding-top: 50px;
-  @include flex-h-center;
   flex-wrap: wrap;
-  gap: 45px;
+  gap: 30px;
+  padding-top: 50px;
+
+  @include flex-h-center;
+
+  .feedback-description-wrap {
+    max-width: 370px;
+  }
+
+  .feedback-form-wrap {
+    max-width: 671px;
+    padding-bottom: 30px;
+  }
 }
 
 @include tablet {
+
   .feedback-wrap {
-    @include flex;
-    max-width: 671px;
     flex-direction: column;
+    gap: 43px;
+    max-width: 671px;
     margin: 0 auto;
+
+    @include flex;
   }
 }
 
 @include mobile {
+
   .feedback-wrap {
     display: block;
-  }
 
-  .feedback-description-wrap {
-    margin-bottom: 60px;
+    .feedback-description-wrap {
+      margin-bottom: 60px;
+    }
   }
 }
 </style>

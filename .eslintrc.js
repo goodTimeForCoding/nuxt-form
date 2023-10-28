@@ -10,6 +10,7 @@ module.exports = {
     'plugin:vue/essential',
     'plugin:vue/vue3-recommended',
     'plugin:nuxt/recommended',
+    'prettier',
   ],
   parser: 'vue-eslint-parser',
   overrides: [
@@ -17,17 +18,17 @@ module.exports = {
       env: {
         node: true,
       },
-      files: [
-        '.eslintrc.{js,cjs}',
-      ],
+      files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
       },
     },
     {
-      files: ['pages/**/*.vue'],
+      files: ['pages/**/*.vue', 'components/**/*.vue', 'store/**/*.js'],
       rules: {
         'vue/multi-word-component-names': 0,
+        'import/prefer-default-export': 'off',
+        allowObjectPatternsAsParameters: 'true',
       },
     },
   ],
@@ -35,15 +36,16 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [
-    'vue',
-  ],
+  plugins: ['vue'],
   rules: {
     'max-len': ['error', { code: 120 }],
-    'vue/max-len': ['error', {
-      code: 120,
-      template: 100,
-    }],
+    'vue/max-len': [
+      'error',
+      {
+        code: 120,
+        template: 120,
+      },
+    ],
   },
   settings: {
     'import/resolver': {

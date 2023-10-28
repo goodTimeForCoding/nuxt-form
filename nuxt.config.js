@@ -1,3 +1,5 @@
+import StylelintPlugin from 'stylelint-webpack-plugin';
+
 export default {
   head: {
     title: 'nuxt-form',
@@ -15,11 +17,18 @@ export default {
 
   css: ['normalize.css', './assets/styles/global.scss'],
 
-  plugins: [
-    './plugins/vuePhoneNumberInput.js',
-    './plugins/vueSelect.js',
-    { src: './plugins/veeValidate.js', ssr: true },
-  ],
+  plugins: ['./plugins/vuePhoneNumberInput.js', './plugins/directives.js'],
+
+  build: {
+    extend(config) {
+      config.plugins.push(
+        new StylelintPlugin({
+          files: ['{components,layouts,pages}/**/*.vue', '**/*.css'],
+          fix: true,
+        })
+      );
+    },
+  },
 
   components: true,
   buildModules: [],
@@ -27,13 +36,8 @@ export default {
     '@nuxtjs/axios',
     'nuxt-webfontloader',
     '@nuxtjs/style-resources',
-    '@nuxtjs/toast',
     '@nuxtjs/recaptcha',
   ],
-
-  build: {
-    transpile: ['vee-validate/dist/rules'],
-  },
 
   webfontloader: {
     events: false,
@@ -48,16 +52,12 @@ export default {
       './assets/styles/mini.scss',
       './assets/styles/settings.scss',
       './assets/styles/breakpoint.scss',
+      './assets/styles/variables.scss',
     ],
   },
 
   axios: {
     baseURL: process.env.API_URL,
-  },
-
-  toast: {
-    position: 'top-right',
-    duration: 10000,
   },
 
   recaptcha: {
